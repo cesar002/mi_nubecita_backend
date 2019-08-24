@@ -19,8 +19,8 @@ class CreateTokenConfirmacionCuentaAsociadoUsuariosTable extends Migration{
             $table->dateTime('fecha_limite');
             $table->dateTime('fecha_uso')->nullable();
 
-            $table->foreign('id_usuario')->references('id')->on('users');
-            $table->foreign('id_token')->references('id_token_confirmacion')->on('tokens_confirmacion_cuentas');
+            // $table->foreign('id_usuario')->references('id')->on('users');
+            // $table->foreign('id_token')->references('id_token_confirmacion')->on('tokens_confirmacion_cuentas');
         });
     }
 
