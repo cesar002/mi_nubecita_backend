@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePapelerasTable extends Migration
+class AddForeignKeyNubesUsuarios extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreatePapelerasTable extends Migration
      */
     public function up()
     {
-        Schema::create('papeleras', function (Blueprint $table) {
-            $table->bigIncrements('id_papelera');
-            $table->bigInteger('id_nube');
+        Schema::table('nubes_usuarios', function (Blueprint $table) {
+            $table->foreign('id_usuario')->references('id')->on('users');
         });
     }
 
@@ -26,6 +25,8 @@ class CreatePapelerasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('papeleras');
+        Schema::table('nubes_usuarios', function (Blueprint $table) {
+            $table->dropForeign(['id_usuario']);
+        });
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateArchivosFavoritosTable extends Migration
 {
@@ -17,11 +18,8 @@ class CreateArchivosFavoritosTable extends Migration
             $table->bigIncrements('id_favorito');
             $table->bigInteger('id_archivo');
             $table->bigInteger('id_usuario');
-            $table->dateTime('fecha')->default('CURRENT_TIMESTAMP');
+            $table->dateTime('fecha')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('activo')->default(true);
-
-            // $table->foreign('id_archivo')->references('id_archivo')->on('archivos_subidos');
-            // $table->foreign('id_usuario')->references('id')->on('users');
         });
     }
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateArchivosSubidosTable extends Migration
 {
@@ -19,10 +20,8 @@ class CreateArchivosSubidosTable extends Migration
             $table->string('nombre_archivo', 150);
             $table->string('tipo_archivo', 6);
             $table->double('size_file');
-            $table->dateTime('fecha_subida')->default('CURRENT_TIMESTAMP');
+            $table->dateTime('fecha_subida')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('eliminado')->default(false);
-
-            // $table->foreign('id_carpeta')->references('id_carpeta')->on('carpetas_usuarios');
         });
     }
 

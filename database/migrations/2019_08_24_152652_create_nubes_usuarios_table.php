@@ -18,8 +18,6 @@ class CreateNubesUsuariosTable extends Migration
             $table->string('hash_name', 100);
             $table->bigInteger('id_usuario');
             $table->boolean('activo')->default(true);
-
-            // $table->foreign('id_usuario')->references('id')->on('users');
         });
     }
 

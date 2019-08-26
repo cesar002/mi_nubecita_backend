@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateTokensConfirmacionCuentasTable extends Migration
 {
@@ -16,7 +17,7 @@ class CreateTokensConfirmacionCuentasTable extends Migration
         Schema::create('tokens_confirmacion_cuentas', function (Blueprint $table) {
             $table->bigIncrements('id_token_confirmacion');
             $table->string('token', 100)->unique();
-            $table->dateTime('fecha_creacion')->default('CURRENT_TIMESTAMP');
+            $table->dateTime('fecha_creacion')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('activo')->default(true);
         });
     }

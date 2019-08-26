@@ -17,9 +17,6 @@ class CreateLimiteUsuariosAlmacenajesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('id_usuario');
             $table->bigInteger('id_limite');
-
-            // $table->foreign('id_usuario')->references('id')->on('users');
-            // $table->foreign('id_limite')->references('id_limite')->on('limites_almacenaje');
         });
     }
 

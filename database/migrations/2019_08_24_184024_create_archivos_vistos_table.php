@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateArchivosVistosTable extends Migration
 {
@@ -16,9 +17,7 @@ class CreateArchivosVistosTable extends Migration
         Schema::create('archivos_vistos', function (Blueprint $table) {
             $table->bigIncrements('id_visto');
             $table->bigInteger('id_archivo');
-            $table->dateTime('ultima_vista')->default('CURRENT_TIMESTAMP');
-
-            // $table->foreign('id_archivo')->references('id_archivo')->on('archivos_subidos');
+            $table->dateTime('ultima_vista')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

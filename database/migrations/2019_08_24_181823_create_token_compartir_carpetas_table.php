@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateTokenCompartirCarpetasTable extends Migration
 {
@@ -17,12 +18,10 @@ class CreateTokenCompartirCarpetasTable extends Migration
             $table->bigIncrements('id_token');
             $table->bigInteger('id_carpeta');
             $table->string('token', 100)->unique();
-            $table->dateTime('fecha_creacion')->default('CURRENT_TIMESTAMP');
+            $table->dateTime('fecha_creacion')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('fecha_vencimiento')->nullable();
             $table->string('password', 100)->nullable();
             $table->boolean('activo')->default(true);
-
-            // $table->foreign('id_carpeta')->references('carpetas_usuarios')->on('id_carpeta');
         });
     }
 
