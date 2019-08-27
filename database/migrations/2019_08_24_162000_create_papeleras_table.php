@@ -14,8 +14,8 @@ class CreatePapelerasTable extends Migration
     public function up()
     {
         Schema::create('papeleras', function (Blueprint $table) {
-            $table->bigIncrements('id_papelera');
-            $table->bigInteger('id_nube');
+            $table->integer('id_papelera')->autoIncrement();
+            $table->integer('id_nube');
         });
     }
 

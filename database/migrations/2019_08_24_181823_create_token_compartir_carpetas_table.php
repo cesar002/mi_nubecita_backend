@@ -15,8 +15,8 @@ class CreateTokenCompartirCarpetasTable extends Migration
     public function up()
     {
         Schema::create('token_compartir_carpetas', function (Blueprint $table) {
-            $table->bigIncrements('id_token');
-            $table->bigInteger('id_carpeta');
+            $table->integer('id_token')->autoIncrement();
+            $table->integer('id_carpeta');
             $table->string('token', 100)->unique();
             $table->dateTime('fecha_creacion')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('fecha_vencimiento')->nullable();

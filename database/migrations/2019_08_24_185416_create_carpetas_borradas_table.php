@@ -15,9 +15,9 @@ class CreateCarpetasBorradasTable extends Migration
     public function up()
     {
         Schema::create('carpetas_borradas', function (Blueprint $table) {
-            $table->bigIncrements('id_carpeta_borrada');
-            $table->bigInteger('id_papelera');
-            $table->bigInteger('id_archivo');
+            $table->integer('id_carpeta_borrada')->autoIncrement();
+            $table->integer('id_papelera');
+            $table->integer('id_archivo');
             $table->dateTime('fecha_borrado_temp')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('borrado_temp')->default(true);
             $table->dateTime('fecha_borrado_def')->nullable();

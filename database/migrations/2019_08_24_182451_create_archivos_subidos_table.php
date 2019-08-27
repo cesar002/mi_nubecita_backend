@@ -15,8 +15,8 @@ class CreateArchivosSubidosTable extends Migration
     public function up()
     {
         Schema::create('archivos_subidos', function (Blueprint $table) {
-            $table->bigIncrements('id_archivo');
-            $table->bigInteger('id_carpeta');
+            $table->integer('id_archivo')->autoIncrement();
+            $table->integer('id_carpeta');
             $table->string('nombre_archivo', 150);
             $table->string('tipo_archivo', 6);
             $table->double('size_file');

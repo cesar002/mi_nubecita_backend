@@ -55,4 +55,22 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(){
         return [];
     }
+
+
+    public function tokenConfirmacionAsociado(){
+        return $this->hasOne('App\TokenConfirmacionCuentaAsociadoUsuarios', 'id_usuario');
+    }
+
+    public function limiteAlmacenaje(){
+        return $this->hasOne('App\LimiteUsuariosAlmacenaje', 'id_usuario');
+    }
+
+    public function nubeUsuario(){
+        return $this->hasOne('App\NubesUsuarios', 'id_usuario');
+    }
+
+    public function archivosFavoritos(){
+        return $this->hasMany('App\ArchivosFavoritos', 'id_usuario');
+    }
+
 }

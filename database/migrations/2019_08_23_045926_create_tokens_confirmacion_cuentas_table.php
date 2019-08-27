@@ -15,7 +15,7 @@ class CreateTokensConfirmacionCuentasTable extends Migration
     public function up()
     {
         Schema::create('tokens_confirmacion_cuentas', function (Blueprint $table) {
-            $table->bigIncrements('id_token_confirmacion');
+            $table->integer('id_token_confirmacion')->autoIncrement();
             $table->string('token', 100)->unique();
             $table->dateTime('fecha_creacion')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('activo')->default(true);

@@ -15,9 +15,9 @@ class CreateArchivosBorradosTable extends Migration
     public function up()
     {
         Schema::create('archivos_borrados', function (Blueprint $table) {
-            $table->bigIncrements('id_archivo_borrado');
-            $table->bigInteger('id_papelera');
-            $table->bigInteger('id_archivo');
+            $table->integer('id_archivo_borrado')->autoIncrement();
+            $table->integer('id_papelera');
+            $table->integer('id_archivo');
             $table->dateTime('fecha_borrado_temp')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('borrado_temp')->default(true);
             $table->dateTime('fecha_borrado_def')->nullable();

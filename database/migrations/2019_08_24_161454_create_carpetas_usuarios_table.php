@@ -15,8 +15,8 @@ class CreateCarpetasUsuariosTable extends Migration
     public function up()
     {
         Schema::create('carpetas_usuarios', function (Blueprint $table) {
-            $table->bigIncrements('id_carpeta');
-            $table->bigInteger('id_nube');
+            $table->integer('id_carpeta')->autoIncrement();
+            $table->integer('id_nube');
             $table->string('nombre_carpeta', 250);
             $table->string('path_carpeta', 250);
             $table->dateTime('fecha_creacion')->default(DB::raw('CURRENT_TIMESTAMP'));

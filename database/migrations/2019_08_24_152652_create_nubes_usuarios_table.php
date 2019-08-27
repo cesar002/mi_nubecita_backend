@@ -14,9 +14,9 @@ class CreateNubesUsuariosTable extends Migration
     public function up()
     {
         Schema::create('nubes_usuarios', function (Blueprint $table) {
-            $table->bigIncrements('id_nube');
+            $table->integer('id_nube')->autoIncrement();
             $table->string('hash_name', 100);
-            $table->bigInteger('id_usuario');
+            $table->integer('id_usuario');
             $table->boolean('activo')->default(true);
         });
     }

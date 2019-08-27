@@ -15,8 +15,8 @@ class CreateTokenCompartirArchivosTable extends Migration
     public function up()
     {
         Schema::create('token_compartir_archivos', function (Blueprint $table) {
-            $table->bigIncrements('id_token');
-            $table->bigInteger('id_archivo');
+            $table->integer('id_token')->autoIncrement();
+            $table->integer('id_archivo');
             $table->string('token', 100)->unique();
             $table->dateTime('fecha_creacion')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('fecha_vencimiento');

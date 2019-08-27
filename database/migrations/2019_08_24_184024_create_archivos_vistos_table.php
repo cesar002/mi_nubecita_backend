@@ -15,8 +15,8 @@ class CreateArchivosVistosTable extends Migration
     public function up()
     {
         Schema::create('archivos_vistos', function (Blueprint $table) {
-            $table->bigIncrements('id_visto');
-            $table->bigInteger('id_archivo');
+            $table->integer('id_visto')->autoIncrement();
+            $table->integer('id_archivo');
             $table->dateTime('ultima_vista')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }

@@ -15,9 +15,9 @@ class CreateArchivosFavoritosTable extends Migration
     public function up()
     {
         Schema::create('archivos_favoritos', function (Blueprint $table) {
-            $table->bigIncrements('id_favorito');
-            $table->bigInteger('id_archivo');
-            $table->bigInteger('id_usuario');
+            $table->integer('id_favorito')->autoIncrement();
+            $table->integer('id_archivo');
+            $table->integer('id_usuario');
             $table->dateTime('fecha')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('activo')->default(true);
         });

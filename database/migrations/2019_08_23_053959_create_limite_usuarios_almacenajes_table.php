@@ -14,9 +14,9 @@ class CreateLimiteUsuariosAlmacenajesTable extends Migration
     public function up()
     {
         Schema::create('limite_usuarios_almacenaje', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('id_usuario');
-            $table->bigInteger('id_limite');
+            $table->integer('id')->autoIncrement();
+            $table->integer('id_usuario');
+            $table->integer('id_limite');
         });
     }
 
