@@ -16,9 +16,9 @@ class CheckUserEmailVerify
      */
     public function handle($request, Closure $next)
     {
-        $user = auth()->user();
+        $user = User::where('email', $request['email'])->where('validado', true)->first();
 
-        if($user->validado){
+        if(isEmpty($user)){
             return $next($request);
         }
 
