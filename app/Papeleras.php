@@ -10,15 +10,15 @@ class Papeleras extends Model{
 
 
     public function nube(){
-        $this->belongsTo('App\NubesUsuarios', 'id_nube');
+        $this->belongsTo('App\NubesUsuarios', 'id_nube', 'id_papelera');
     }
 
     public function carpetasBorradas(){
-        $this->hasMany('App\CarpetasBorradas', 'id_papelera');
+        $this->hasMany('App\CarpetasBorradas', 'id_papelera', 'id_papelera');
     }
 
     public function archivosBorrados(){
-        $this->hasMany('App\ArchivosBorrados', 'id_papelera');
+        $this->hasMany('App\ArchivosBorrados', 'id_papelera', 'id_papelera');
     }
 
 }

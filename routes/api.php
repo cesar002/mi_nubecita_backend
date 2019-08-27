@@ -23,16 +23,9 @@ Route::group(['prefix' => 'mi_nube'], function(){
 Route::group(['prefix' => 'auth'], function(){
     Route::post('registrarse', 'AuthController@registrarse');
     Route::post('login', 'AuthController@login')->middleware('checkUserEmailVerify');
-    Route::post('logout', function ($id) {
-
-    });
+    Route::post('logout', 'AuthController@logout');
+    Route::get('verificacion/{token}', 'VerificacionCorreoController@verificarCorreo')->name('verificar');
 });
-
-//verificacion de correo
-Route::get('verificacion/{token}', function ($token) {
-
-})->name('verificacion');
-
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

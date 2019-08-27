@@ -10,15 +10,15 @@ class CarpetasUsuarios extends Model{
 
 
     public function nube(){
-        return $this->belongsTo('App\NubesUsuarios', 'id_nube');
+        return $this->belongsTo('App\NubesUsuarios', 'id_nube', 'id_carpeta');
     }
 
     public function tokensCompartir(){
-        return $this->hasMany('App\TokenCompartirCarpetas', 'id_carpeta');
+        return $this->hasMany('App\TokenCompartirCarpetas', 'id_carpeta', 'id_carpeta');
     }
 
     public function archivos(){
-        return $this->hasMany('App\ArchivosSubidos', 'id_carpeta');
+        return $this->hasMany('App\ArchivosSubidos', 'id_carpeta', 'id_carpeta');
     }
 
 }

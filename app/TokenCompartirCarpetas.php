@@ -9,6 +9,6 @@ class TokenCompartirCarpetas extends Model{
     public $timestamps = false;
 
     public function carpeta(){
-        $this->belongsTo('App\CarpetasUsuarios', 'id_carpeta');
+        $this->belongsTo('App\CarpetasUsuarios', 'id_carpeta', 'id_token');
     }
 }

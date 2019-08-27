@@ -11,7 +11,7 @@ class LimitesAlmacenaje extends Model{
 
 
     public function usuariosAsociados(){
-        return $this->hasMany('LimiteUsuariosAlmacenaje', 'id_limite');
+        return $this->hasMany('LimiteUsuariosAlmacenaje', 'id_limite', 'id_limite');
     }
 
 }

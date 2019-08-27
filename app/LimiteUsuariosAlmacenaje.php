@@ -9,11 +9,11 @@ class LimiteUsuariosAlmacenaje extends Model{
     public $timestamps = false;
 
     public function usuario(){
-        return $this->belongsTo('App\User', 'id_usuario');
+        return $this->belongsTo('App\User', 'id_usuario', 'limite_usuarios_almacenaje');
     }
 
     public function limites(){
-        return $this->belongsTo('LimitesAlmacenaje', 'id_limite');
+        return $this->belongsTo('LimitesAlmacenaje', 'id_limite', 'limite_usuarios_almacenaje');
     }
 
 }

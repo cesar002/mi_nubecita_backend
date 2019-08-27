@@ -9,10 +9,10 @@ class ArchivosFavoritos extends Model{
     public $timestamps = false;
 
     public function usuario(){
-        return $this->belongsTo('App\Users', 'id_usuario');
+        return $this->belongsTo('App\Users', 'id_usuario', 'id_favorito');
     }
 
     public function archivo(){
-        return $this->belongsTo('', '');
+        return $this->belongsTo('App\ArchivosSubidos', 'id_archivo', 'id_favorito');
     }
 }

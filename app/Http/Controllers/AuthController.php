@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-
-use function Psy\debug;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller{
 
@@ -25,42 +25,52 @@ class AuthController extends Controller{
         $this->middleware('auth:api', ['except' => ['login', 'registrarse']]);
     }
 
-    public function registrarse() : JsonResponse{
+    public function registrarse(Request $request) : JsonResponse{
         try{
-            // DB::beginTransaction();
+            $validation = $this->validateRequestRegistrarse($request->all());
+            if(!is_null($validation)){
+                return response()->json([
+                    "status" => 2,
+                    "errors" => $validation,
+                ], 201);
+            }
 
-            // $user = User::create([
-            //     'email' => request('email'),
-            //     'password' => bcrypt(request('password')),
-            // ]);
+            DB::beginTransaction();
 
-            // $tokenVerify = TokensConfirmacionCuentas::create([
-            //     'token' => str_random(50),
-            // ]);
+            $user = User::create([
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
 
-            // $tokenAsignado = TokenConfirmacionCuentaAsociadoUsuarios::create([
-            //     'id_usuario' => $user->id,
-            //     'id_token' => $tokenVerify->id,
-            //     'fecha_limite' => Carbon::now()->addDays(7),
-            // ]);
+            $tokenVerify = TokensConfirmacionCuentas::create([
+                'token' => str_random(50),
+            ]);
 
-            // $token = $tokenVerify->token;
+            $tokenAsignado = TokenConfirmacionCuentaAsociadoUsuarios::create([
+                'id_usuario' => $user->id,
+                'id_token' => $tokenVerify->id,
+                'fecha_limite' => Carbon::now()->addDays(7),
+            ]);
 
-            Mail::to('juliocastillo_13@hotmail.com')->send(new UserVerifyMail('asdasdasdasd'));
+            $token = $tokenVerify->token;
 
-            // DB::commit();
+            Mail::to($user->email)->send(new UserVerifyMail($token));
+
+            DB::commit();
 
             return response()->json([
                 'status' => 1,
                 'mensaje' => 'Registro éxitoso, un mensaje a sido mandado a su correo, entre y verifique su cuenta',
-            ], 220);
+            ], 201);
         }catch(Exception $e){
             DB::rollBack();
+
+            Log::error($e->getMessage());
+
             return response()->json([
                 'status' => 0,
-                'mensaje' => $e->getMessage(),
-                'code' => $e->getCode()
-            ], 401);
+                'mensaje' => 'Error desconocido, intente más tarde',
+            ],501);
         }
     }
 
@@ -69,14 +79,20 @@ class AuthController extends Controller{
      *
      * @return JsonResponse
      */
-    public function login() : JsonResponse{
-        $credentials = request(['email', 'password']);
-
-        if(! $token = auth()->attempt($credentials)){
-            return response()->json(['error' => ''], 401);
+    public function login(Request $request) : JsonResponse{
+        $validation = $this->validateRequestLogin($request->all());
+        if(!is_null($validation)){
+            return response()->json([
+                "status" => 2,
+                "mensajes" => $validation,
+            ], 401);
         }
 
-        // return $this->response
+        if(! $token = auth()->attempt($request->only('email', 'password'))){
+            return response()->json(['status' => 2, 'mensaje' => 'Error al verificar al usuario'], 401);
+        }
+
+        return $this->respondWithtoken($token);
     }
 
     /**
@@ -97,6 +113,7 @@ class AuthController extends Controller{
         auth()->logout();
 
         return response()->json([
+            'status' => 1,
             'mensaje' => 'Deslogeo exitoso',
         ], 201);
     }
@@ -120,9 +137,50 @@ class AuthController extends Controller{
     protected function respondWithtoken(String $token) : JsonResponse{
         return response()->json([
             'access_token'  => $token,
-            'token_type'    => '',
+            'token_type'    => 'AUTH_TOKEN',
             'expires_in'    => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    /**
+     * Verifica los datos del request de entrada del metodo registrarse, retorna null si los datos son correctos, si no, retornará un arreglo con los errores
+     *
+     * @param array $_request
+     * @return array|null
+     */
+    private function validateRequestRegistrarse(array $_request) : ?array{
+        $rules = [
+            "email" => "required|unique:users,email",
+            "password" => "confirmed"
+        ];
+
+        $validator = Validator::make($_request, $rules);
+
+        if($validator->passes()){
+            return null;
+        }
+
+        return $validator->errors()->all();
+    }
+
+    /**
+     * Valida el request de entrada del metodo login, verifica si el email existe, si lo hace, retornará null, si no, retornará un arreglo de errores
+     *
+     * @param array $_request
+     * @return array|null
+     */
+    private function validateRequestLogin(array $_request) : ?array{
+        $rules = [
+            "email" => "required|exists:users,email"
+        ];
+
+        $validator = Validator::make($_request, $rules);
+
+        if($validator->passes()){
+            return null;
+        }
+
+        return $validator->errors()->all();
     }
 
 

@@ -9,15 +9,15 @@ class NubesUsuarios extends Model{
     public $timestamps = false;
 
     public function usuario(){
-        return $this->belongsTo('App\User', 'id_usuario');
+        return $this->belongsTo('App\User', 'id_usuario', 'id_nube');
     }
 
     public function carpetas(){
-        return $this->hasMany('App\CarpetasUsuarios', 'id_nube');
+        return $this->hasMany('App\CarpetasUsuarios', 'id_nube', 'id_nube');
     }
 
     public function papelera(){
-        return $this->hasOne('App\Papeleras', 'id_nube');
+        return $this->hasOne('App\Papeleras', 'id_nube', 'id_nube');
     }
 
 }

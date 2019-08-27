@@ -13,8 +13,8 @@ class TokensConfirmacionCuentas extends Model{
     ];
 
 
-    public function usuariosAsociado(){
-        return $this->hasMany('TokenConfirmacionCuentaAsociadoUsuarios', 'id_token');
+    public function tokensAsociadosUsuarios(){
+        return $this->hasMany('App\TokenConfirmacionCuentaAsociadoUsuarios', 'id_token', 'id_token_confirmacion');
     }
 
 }

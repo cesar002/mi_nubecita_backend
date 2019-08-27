@@ -16,14 +16,14 @@ class CheckUserEmailVerify
      */
     public function handle($request, Closure $next)
     {
-        $user = User::where('email', $request->email)->where('activo', true);
-
-        if(!isEmpty($user)){
+        $user = User::where('email', $request->email)->where('activo', true)->first();
+        if(is_null($user)){
             return $next($request);
         }
 
         return response()->json([
-            "error" => "usuario no existente"
-        ], 401);
+            "status" => 2,
+            "mensaje" => "El correo con el que está intentando acceder no existe o no ha sido verificado, compruebe su información"
+        ], 201);
     }
 }

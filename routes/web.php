@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return view('emails.emailVerificacion');
+    return view('welcome');
 });

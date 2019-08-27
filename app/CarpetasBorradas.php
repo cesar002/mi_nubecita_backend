@@ -9,6 +9,6 @@ class CarpetasBorradas extends Model{
     public $timestamps = false;
 
     public function papelera(){
-        return $this->belongsTo('App\Papeleras', 'id_papelera');
+        return $this->belongsTo('App\Papeleras', 'id_papelera', 'id_carpeta_borrada');
     }
 }
