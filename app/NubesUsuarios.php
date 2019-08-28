@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class NubesUsuarios extends Model{
     protected $primary_key = 'id_nube';
+    protected $primaryKey = 'id_nube';
     public $timestamps = false;
 
     public function usuario(){

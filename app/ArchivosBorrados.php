@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ArchivosBorrados extends Model{
     protected $primary_key = 'id_archivo_borrado';
+    protected $primaryKey = 'id_archivo_borrado';
+
     public $timestamps = false;
 
     public function papelera(){

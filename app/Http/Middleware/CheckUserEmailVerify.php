@@ -17,7 +17,8 @@ class CheckUserEmailVerify
     public function handle($request, Closure $next)
     {
         $user = User::where('email', $request->email)->where('activo', true)->first();
-        if(is_null($user)){
+
+        if(!is_null($user)){
             return $next($request);
         }
 

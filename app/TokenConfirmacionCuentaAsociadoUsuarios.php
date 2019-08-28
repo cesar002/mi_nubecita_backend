@@ -16,6 +16,6 @@ class TokenConfirmacionCuentaAsociadoUsuarios extends Model{
     }
 
     public function tokenConfirmacion(){
-        return $this->belongsTo('App\TokensConfirmacionCuentas', 'id_token');
+        return $this->belongsTo('App\TokensConfirmacionCuentas', 'id_token', 'id_token_confirmacion');
     }
 }

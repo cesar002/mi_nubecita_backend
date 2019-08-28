@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CarpetasUsuarios extends Model{
     protected $primary_key = 'id_carpeta';
+    protected $primaryKey = 'id_carpeta';
+
     public $timestamps = false;
 
 

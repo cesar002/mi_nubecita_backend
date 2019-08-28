@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TokenCompartirArchivos extends Model{
     protected $primary_key = 'id_archivo';
+    protected $primaryKey = 'id_archivo';
     public $timestamps = false;
 
     public function archivo(){

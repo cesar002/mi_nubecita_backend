@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ArchivosFavoritos extends Model{
     protected $primary_key = 'id_favorito';
+    protected $primaryKey = 'id_favorito';
+
     public $timestamps = false;
 
     public function usuario(){

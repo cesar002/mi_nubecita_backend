@@ -48,7 +48,7 @@ class AuthController extends Controller{
 
             $tokenAsignado = TokenConfirmacionCuentaAsociadoUsuarios::create([
                 'id_usuario' => $user->id,
-                'id_token' => $tokenVerify->id,
+                'id_token' => $tokenVerify->id_token_confirmacion,
                 'fecha_limite' => Carbon::now()->addDays(7),
             ]);
 
@@ -91,6 +91,8 @@ class AuthController extends Controller{
         if(! $token = auth()->attempt($request->only('email', 'password'))){
             return response()->json(['status' => 2, 'mensaje' => 'Error al verificar al usuario'], 401);
         }
+
+
 
         return $this->respondWithtoken($token);
     }
@@ -136,9 +138,10 @@ class AuthController extends Controller{
      */
     protected function respondWithtoken(String $token) : JsonResponse{
         return response()->json([
+            'status' => 1,
             'access_token'  => $token,
-            'token_type'    => 'AUTH_TOKEN',
-            'expires_in'    => auth()->factory()->getTTL() * 60
+            'token_type'    => 'bearer',
+            'expires_in'    => auth('api')->factory()->getTTL() * 60
         ]);
     }
 

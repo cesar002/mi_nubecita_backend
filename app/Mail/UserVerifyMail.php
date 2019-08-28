@@ -13,6 +13,7 @@ class UserVerifyMail extends Mailable
     use Queueable, SerializesModels;
 
     public $token;
+    public $direccion;
 
     /**
      * Create a new message instance.
@@ -22,6 +23,7 @@ class UserVerifyMail extends Mailable
     public function __construct(string $token)
     {
         $this->token = $token;
+        $this->direccion = env('HOST_FRONT', "http://localhost:3000")."/verificarCorreo/$token";
     }
 
     /**

@@ -191,7 +191,7 @@
                       <tr>
                         <td align="center">
                           <div>
-                            <a href="{{ route('verificar', ['token'=>$token]) }}" class="button button--green">Verificar Email</a>
+                            <a href="{{ $direccion }}" class="button button--green">Verificar Email</a>
                           </div>
                         </td>
                       </tr>
@@ -205,7 +205,7 @@
                           <p class="sub">
                               Si no te redirige al dar click en el botón, accede al siguiente link
                           </p>
-                          <p class="sub"><a href="{{ route('verificar', ['token'=>$token]) }}">aquí</a></p>
+                          <p class="sub"><a href="{{ $direccion }}">aquí</a></p>
                         </td>
                       </tr>
                     </table>
