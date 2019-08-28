@@ -112,12 +112,21 @@ class AuthController extends Controller{
      * @return JsonResponse
      */
     public function logout() : JsonResponse{
-        auth()->logout();
+        try{
+            auth()->logout();
 
-        return response()->json([
-            'status' => 1,
-            'mensaje' => 'Deslogeo exitoso',
-        ], 201);
+            return response()->json([
+                'status' => 1,
+                'mensaje' => 'Deslogeo exitoso',
+            ], 201);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+
+            return response()->json([
+                'status' => 0,
+                'mensaje' => 'error desconocido, intente más tarde'
+            ]);
+        }
     }
 
     /**
