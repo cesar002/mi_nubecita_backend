@@ -26,7 +26,7 @@ Route::group(['prefix' => 'auth'], function(){
     Route::post('registrarse', 'AuthController@registrarse');
     Route::post('login', 'AuthController@login')->middleware('checkUserEmailVerify');
     Route::post('logout', 'AuthController@logout');
-    Route::post('verificacion/{token}', 'VerificacionCorreoController@verificarCorreo')->name('verificar');
+    Route::get('verificacion/{token}', 'VerificacionCorreoController@verificarCorreo')->name('verificar');
 });
 
 Route::post('prueba', function(){

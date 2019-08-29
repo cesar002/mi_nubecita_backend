@@ -85,11 +85,11 @@ class AuthController extends Controller{
             return response()->json([
                 "status" => 2,
                 "mensajes" => $validation,
-            ], 401);
+            ], 202);
         }
 
         if(! $token = auth()->attempt($request->only('email', 'password'))){
-            return response()->json(['status' => 2, 'mensaje' => 'Error al verificar al usuario'], 401);
+            return response()->json(['status' => 2, 'mensaje' => 'Usuario y/o contraseña incorrecta'], 202);
         }
 
 
