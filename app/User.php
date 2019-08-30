@@ -73,4 +73,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\ArchivosFavoritos', 'id_usuario');
     }
 
+    public function tokensRecuperacionPassword(){
+        return $this->hasMany('App\TokenRecuperacionPassword', 'id_usuario');
+    }
+
 }

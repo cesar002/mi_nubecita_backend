@@ -14,7 +14,7 @@ class AddForeignKeyTokenCompartirCarpetas extends Migration
     public function up()
     {
         Schema::table('token_compartir_carpetas', function (Blueprint $table) {
-            $table->foreign('id_carpeta')->references('carpetas_usuarios')->on('id_carpeta');
+            $table->foreign('id_carpeta')->references('id_carpeta')->on('carpetas_usuarios');
         });
     }
 
