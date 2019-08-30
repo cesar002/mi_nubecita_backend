@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class RecuperacionPasswordController extends Controller{
-    
+
     public function registrarTokenRecuperacion(Request $request) : JsonResponse{
         try{
 
@@ -16,13 +16,13 @@ class RecuperacionPasswordController extends Controller{
         }
     }
 
-    public function validarToken(String $token, Request $request) : JsonResponse{
+    public function validarToken(Request $request, String $token) : JsonResponse{
         try{
 
         }catch(Exception $err){
             return response()->json();
         }
-        
+
     }
 
 }

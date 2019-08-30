@@ -12,8 +12,8 @@ class LimitesAlmacenaje extends Model{
     public $timestamps = false;
 
 
-    public function usuariosAsociados(){
-        return $this->hasMany('LimiteUsuariosAlmacenaje', 'id_limite', 'id_limite');
+    public function usuario(){
+        return $this->belongsTo('App\users', 'id_limite', 'id_limite');
     }
 
 }

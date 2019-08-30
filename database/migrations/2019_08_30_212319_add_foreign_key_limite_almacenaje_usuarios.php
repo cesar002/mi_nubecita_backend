@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddForeignKeyLimiteUsuariosAlmacenaje extends Migration
+class AddForeignKeyLimiteAlmacenajeUsuarios extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,7 @@ class AddForeignKeyLimiteUsuariosAlmacenaje extends Migration
      */
     public function up()
     {
-        Schema::table('limite_usuarios_almacenaje', function (Blueprint $table) {
-            $table->foreign('id_usuario')->references('id')->on('users');
+        Schema::table('users', function (Blueprint $table) {
             $table->foreign('id_limite')->references('id_limite')->on('limites_almacenaje');
         });
     }
@@ -26,9 +25,8 @@ class AddForeignKeyLimiteUsuariosAlmacenaje extends Migration
      */
     public function down()
     {
-        Schema::table('limite_usuarios_almacenaje', function (Blueprint $table) {
-            $table->dropForeign(['id_usuario']);
-            $table->dropForeign(['id_usuario']);
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('id_limite');
         });
     }
 }

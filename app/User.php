@@ -62,7 +62,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function limiteAlmacenaje(){
-        return $this->hasOne('App\LimiteUsuariosAlmacenaje', 'id_usuario');
+        return $this->hasOne('App\LimitesAlmacenaje', 'id_limite');
     }
 
     public function nubeUsuario(){
