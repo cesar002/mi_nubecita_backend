@@ -24,7 +24,7 @@ Route::group(['prefix' => 'mi_nube', 'middleware' => 'auth:api'], function(){
 
     //rutas de subidas y descargas de archivos
     Route::group(['prefix' => 'store'], function () {
-        Route::post('upload', 'ArchivosController@uploadFiles')->middleware('cors');
+        Route::post('upload', 'ArchivosController@uploadFiles');//->middleware('cors');
     });
 });
 
