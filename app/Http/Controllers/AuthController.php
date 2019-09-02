@@ -54,7 +54,7 @@ class AuthController extends Controller{
 
             $token = $tokenVerify->token;
 
-            // Mail::to($user->email)->send(new UserVerifyMail($token));
+            Mail::to($user->email)->send(new UserVerifyMail($token));
 
             DB::commit();
 
@@ -103,7 +103,17 @@ class AuthController extends Controller{
      * @return JsonResponse
      */
     public function me() : JsonResponse{
-        return response()->json(auth()->user());
+        $carpeta = auth()->user()->nubeUsuario()->where('id_nube', 1)->first()->carpetas()->where('nombre_carpeta', 'root')->first();
+        $total = $carpeta->archivos->sum('size_file');
+        $limite = auth()->user()->limiteAlmacenaje()->first();
+        return response()->json([
+            'me' => auth()->user()->email,
+            'enUso' => $total,
+            'limiteAlmacenaje' => [
+                'tipo' => $limite->tipo_limite,
+                'limite' => $limite->limite,
+            ]
+        ]);
     }
 
     /**

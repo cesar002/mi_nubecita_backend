@@ -16,13 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 //conjunto de rutas de acciones de mi nube con el usuario autenticado
 Route::group(['prefix' => 'mi_nube', 'middleware' => 'auth:api'], function(){
-    Route::get('me', function(){
-        return response()->json(['status' => 1, 'me' => auth()->user()->email]);
-    });
+    Route::get('me', 'AuthController@me');
     //rutas de subidas y descargas de archivos
     Route::group(['prefix' => 'store'], function () {
         Route::post('upload', 'ArchivosController@uploadFiles');
-        Route::get('enUso', 'ArchivosController@totalStorageInUse');
+        Route::get('getFiles', 'ArchivosController@getFiles');
     });
 });
 

@@ -10,9 +10,16 @@ use Illuminate\Support\Facades\Storage;
 use App\ArchivosSubidos;
 use App\CarpetasUsuarios;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Crypt;
 
 class ArchivosController extends Controller{
 
+    /**
+     * Sube los archivos a la nube del usuario
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function uploadFiles(Request $request) : JsonResponse{
         $fileUpload = null;
         try{
@@ -30,7 +37,7 @@ class ArchivosController extends Controller{
                         'nombre_privado' => basename($fileUpload),
                         'nombre_archivo' => $file->getClientOriginalName(),
                         'tipo_archivo' => $file->getMimeType(),
-                        'size_file' => $this->convertSizeFileToKB($file->getSize()),
+                        'size_file' => $file->getSize(),
                     ]);
                 }else{
                     array_push($filesRepetidos, ['fileName' => $file->getClientOriginalName()]);
@@ -54,15 +61,32 @@ class ArchivosController extends Controller{
         }
     }
 
-    public function totalStorageInUse() : JsonResponse{
-        $total = auth()->user()->nubeUsuario()->where('id_nube', 1)->first()->carpetas()->archivos();//->archivos()->sum('size_file');
-        \Debugbar::info($total);
-        return response()->json([]);
-    }
+    /**
+     * Retorna la lista de archivos que se encuentran en la raíz
+     *
+     * @return JsonResponse
+     */
+    public function getFiles() : JsonResponse{
+        $idNube = auth()->user()->nubeUsuario()->first()->id_nube;
+        $idCarpeta = CarpetasUsuarios::where('id_nube', $idNube)->where('nombre_carpeta', 'root')->first()->id_carpeta;
+        $archivos = ArchivosSubidos::where('id_carpeta', $idCarpeta)->get();
 
-    private function convertSizeFileToKB($size){
-        $kbSize = $size * 0.001;
-        return bcdiv($kbSize, '1', 2);
+        if(is_null($archivos)){
+            return response()->json([]);
+        }
+
+        $archivosResp = [];
+        foreach($archivos as $archivo){
+            array_push($archivosResp, [
+                'idArchivo' => Crypt::encrypt($archivo->id_archivo),
+                'nombre' => $archivo->nombre_archivo,
+                'size' => $archivo->size_file,
+                'fechaSubida' => $archivo->fecha_subida,
+                'tipo' => substr($archivo->tipo_archivo, strpos($archivo->tipo_archivo,"/")+1),
+            ]);
+        }
+
+        return response()->json($archivosResp);
     }
 
     private function existFileUpload(int $idCarpeta, string $nombreArchivo, string $typeFile) : bool{
