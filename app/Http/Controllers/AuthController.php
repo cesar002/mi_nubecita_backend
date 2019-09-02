@@ -54,7 +54,7 @@ class AuthController extends Controller{
 
             $token = $tokenVerify->token;
 
-            Mail::to($user->email)->send(new UserVerifyMail($token));
+            // Mail::to($user->email)->send(new UserVerifyMail($token));
 
             DB::commit();
 

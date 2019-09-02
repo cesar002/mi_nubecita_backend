@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\TokenConfirmacionCuentaAsociadoUsuarios;
 use App\TokensConfirmacionCuentas;
+use App\NubesUsuarios;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class VerificacionCorreoController extends Controller{
 
@@ -18,7 +21,7 @@ class VerificacionCorreoController extends Controller{
             $data = TokensConfirmacionCuentas::where('tokens_confirmacion_cuentas.token', $token)->where('tokens_confirmacion_cuentas.activo', true)
                         ->join('token_confirmacion_cuenta_asociado_usuarios', 'token_confirmacion_cuenta_asociado_usuarios.id_token', '=', 'tokens_confirmacion_cuentas.id_token_confirmacion')
                         ->join('users', 'users.id', '=', 'token_confirmacion_cuenta_asociado_usuarios.id_usuario')
-                        ->select('token_confirmacion_cuenta_asociado_usuarios.id', 'token_confirmacion_cuenta_asociado_usuarios.fecha_limite', 'users.email', 'tokens_confirmacion_cuentas.id_token_confirmacion')->first();
+                        ->select('token_confirmacion_cuenta_asociado_usuarios.id', 'token_confirmacion_cuenta_asociado_usuarios.fecha_limite', 'users.email', 'users.id','tokens_confirmacion_cuentas.id_token_confirmacion')->first();
             if(is_null($data)){
                 return response()->json(['status' => 2, 'mensaje' => 'Clave de verificación incorrecta'], 201);
             }
@@ -41,6 +44,14 @@ class VerificacionCorreoController extends Controller{
             $user = User::where('email', $data->email)->first();
             $user->validado = true;
             $user->save();
+
+            $nubeName = str_random(rand(16, 26));
+            Storage::makeDirectory($nubeName);
+            NubesUsuarios::create([
+                'hash_name' => $nubeName,
+                'id_usuario' => $data->id,
+                'activo' => true
+            ]);
 
             DB::commit();
 

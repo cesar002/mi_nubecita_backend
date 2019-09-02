@@ -10,6 +10,10 @@ class ArchivosSubidos extends Model{
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'id_carpeta', 'nombre_privado', 'nombre_archivo', 'tipo_archivo', 'size_file', 'fecha_subida'
+    ];
+
     public function carpeta(){
         return $this->belongsTo('App\CarpetasUsuarios', 'id_carpeta', 'id_archivo');
     }

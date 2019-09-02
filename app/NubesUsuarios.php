@@ -9,6 +9,10 @@ class NubesUsuarios extends Model{
     protected $primaryKey = 'id_nube';
     public $timestamps = false;
 
+    protected $fillable = [
+        'hash_name', 'id_usuario', 'activo'
+    ];
+
     public function usuario(){
         return $this->belongsTo('App\User', 'id_usuario', 'id_nube');
     }
