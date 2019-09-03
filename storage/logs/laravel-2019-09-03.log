@@ -124,3 +124,4 @@
 #57 C:\\laragon\\www\\mi_nubecita_api\\public\\index.php(56): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #58 {main}
 "} 
+[2019-09-03 14:42:32] local.ERROR: SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'tipo_archivo' at row 1 (SQL: insert into `archivos_subidos` (`id_carpeta`, `nombre_privado`, `nombre_archivo`, `tipo_archivo`, `size_file`) values (1, JH9Pdcfd1Pin4gtNN9zwT7P7bRvc85IlwfU6MIfY.docx, 555.docx, application/vnd.openxmlformats-officedocument.wordprocessingml.document, 1243091))  

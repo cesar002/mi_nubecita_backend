@@ -19,7 +19,7 @@ class CreateArchivosSubidosTable extends Migration
             $table->integer('id_carpeta');
             $table->string("nombre_privado", 200);
             $table->string('nombre_archivo', 200);
-            $table->string('tipo_archivo', 50);
+            $table->string('tipo_archivo', 30);
             $table->bigInteger('size_file');
             $table->dateTime('fecha_subida')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('eliminado')->default(false);

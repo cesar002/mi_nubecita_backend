@@ -33,15 +33,3 @@ Route::group(['prefix' => 'auth'], function(){
     Route::post('recuperarPassword/{token}', 'RecuperacionPassword@validarToken');
     Route::post('recuperarPassword', 'RecuperacionPassword@registrarTokenRecuperacion');
 });
-
-// Route::group(['prefix' => 'pruebas'], function(){
-//     Route::get('wea', function () {
-//         return response('prueba 1');
-//     });
-//     Route::group(['prefix' => 'evo'], function () {
-//         Route::get('ovo', function () {
-//             return response('obo uwu');
-//         });
-//     });
-// });//->middleware('auth:api');
-

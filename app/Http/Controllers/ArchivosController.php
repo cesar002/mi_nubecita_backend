@@ -37,7 +37,7 @@ class ArchivosController extends Controller{
                         'id_carpeta' => $carpetaUsuario->id_carpeta,
                         'nombre_privado' => basename($fileUpload),
                         'nombre_archivo' => $file->getClientOriginalName(),
-                        'tipo_archivo' => $file->getMimeType(),
+                        'tipo_archivo' => substr($file->getClientOriginalName(), strpos($file->getClientOriginalName(), ".")+1),
                         'size_file' => $file->getSize(),
                     ]);
                     array_push($archivosResp, [
@@ -46,7 +46,7 @@ class ArchivosController extends Controller{
                         'nombre' => $file->getClientOriginalName(),
                         'size' => $file->getSize(),
                         'fechaSubida' => ArchivosSubidos::where('id_archivo', $archivoSubido->id_archivo)->first()->fecha_subida,
-                        'tipo' =>  substr($file->getMimeType(), strpos($file->getMimeType(), "/")+1),
+                        'tipo' =>  substr($file->getClientOriginalName(), strpos($file->getClientOriginalName(), ".")+1),
                     ]);
                 }else{
                     array_push($filesRepetidos, ['fileName' => $file->getClientOriginalName()]);
@@ -94,7 +94,7 @@ class ArchivosController extends Controller{
                 'nombre' => $archivo->nombre_archivo,
                 'size' => $archivo->size_file,
                 'fechaSubida' => $archivo->fecha_subida,
-                'tipo' => substr($archivo->tipo_archivo, strpos($archivo->tipo_archivo,"/")+1),
+                'tipo' => $archivo->tipo_archivo,
             ]);
         }
 
