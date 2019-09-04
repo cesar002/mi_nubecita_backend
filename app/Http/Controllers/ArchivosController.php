@@ -28,16 +28,17 @@ class ArchivosController extends Controller{
             $files = $request->allFiles()['files'];
             $cloud = auth()->user()->nubeUsuario()->first();
             $carpetaUsuario = CarpetasUsuarios::where('id_nube', $cloud->id_nube)->where('nombre_carpeta', 'root')->first();
-
             DB::beginTransaction();
             foreach($files as $file){
                 if(!$this->existFileUpload($carpetaUsuario->id_carpeta, $file->getClientOriginalName(), $file->getMimeType())){
                     $fileUpload = Storage::putFile($cloud->hash_name, $file);
+                    $wea = $this->getFileExtencion($file->getClientOriginalName());
+                    \Debugbar::info($wea);
                     $archivoSubido = ArchivosSubidos::create([
                         'id_carpeta' => $carpetaUsuario->id_carpeta,
                         'nombre_privado' => basename($fileUpload),
                         'nombre_archivo' => $file->getClientOriginalName(),
-                        'tipo_archivo' => substr($file->getClientOriginalName(), strpos($file->getClientOriginalName(), ".")+1),
+                        'tipo_archivo' => $this->getFileExtencion($file->getClientOriginalName()),
                         'size_file' => $file->getSize(),
                     ]);
                     array_push($archivosResp, [
@@ -46,7 +47,7 @@ class ArchivosController extends Controller{
                         'nombre' => $file->getClientOriginalName(),
                         'size' => $file->getSize(),
                         'fechaSubida' => ArchivosSubidos::where('id_archivo', $archivoSubido->id_archivo)->first()->fecha_subida,
-                        'tipo' =>  substr($file->getClientOriginalName(), strpos($file->getClientOriginalName(), ".")+1),
+                        'tipo' => $this->getFileExtencion($file->getClientOriginalName()),
                     ]);
                 }else{
                     array_push($filesRepetidos, ['fileName' => $file->getClientOriginalName()]);
@@ -58,7 +59,7 @@ class ArchivosController extends Controller{
                 'mensaje' => 'Archivos subido con éxito',
                 'archivos' => $archivosResp,
                 'repetidos' => $filesRepetidos,
-                'enUso' => $this->getEnUso(),
+                'enUso' => $this->getStorageEnUso(),
             ], 200);
         }catch(Exception $e){
             Log::error($e->getMessage());
@@ -110,10 +111,21 @@ class ArchivosController extends Controller{
         return !is_null($archivo);
     }
 
-    private function getEnUso() : int{
+    private function getStorageEnUso() : int{
         $carpeta = auth()->user()->nubeUsuario()->where('id_nube', 1)->first()->carpetas()->where('nombre_carpeta', 'root')->first();
         $total = $carpeta->archivos->sum('size_file');
         return $total;
+    }
+
+    private function getFileExtencion(string $fileName) : string{
+        $index = 0;
+        for($i = strlen($fileName)-1; $i>=0; $i--){
+            if($fileName[$i] == "."){
+                $index = $i+1;
+                break;
+            }
+        }
+        return substr($fileName, $index);
     }
 
     /*
