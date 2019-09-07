@@ -17,7 +17,9 @@ class CreateTriggerCarpetaRoot extends Migration
         DB::unprepared(
             "CREATE TRIGGER insertar_Root_Carpeta_trigger AFTER INSERT ON nubes_usuarios
                 FOR EACH ROW
-            INSERT INTO carpetas_usuarios (id_nube, nombre_carpeta, path_carpeta) VALUES (NEW.id_nube, 'root', '/')"
+            INSERT INTO carpetas_usuarios (id_nube, nombre_carpeta, path_carpeta) VALUES (NEW.id_nube, 'root', '/');
+            INSERT INTO papeleras (id_nube) VALUES(NEW.id_nube);
+            "
         );
     }
 

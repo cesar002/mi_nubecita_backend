@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ArchivosBorrados;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -48,6 +49,7 @@ class ArchivosController extends Controller{
                         'size' => $file->getSize(),
                         'fechaSubida' => ArchivosSubidos::where('id_archivo', $archivoSubido->id_archivo)->first()->fecha_subida,
                         'tipo' => $this->getFileExtencion($file->getClientOriginalName()),
+                        'selected' => false,
                     ]);
                 }else{
                     array_push($filesRepetidos, ['fileName' => $file->getClientOriginalName()]);
@@ -81,7 +83,7 @@ class ArchivosController extends Controller{
     public function getFiles() : JsonResponse{
         $idNube = auth()->user()->nubeUsuario()->first()->id_nube;
         $idCarpeta = CarpetasUsuarios::where('id_nube', $idNube)->where('nombre_carpeta', 'root')->first()->id_carpeta;
-        $archivos = ArchivosSubidos::where('id_carpeta', $idCarpeta)->get();
+        $archivos = ArchivosSubidos::where('id_carpeta', $idCarpeta)->where('eliminado', false)->get();
 
         if(is_null($archivos)){
             return response()->json([]);
@@ -96,10 +98,47 @@ class ArchivosController extends Controller{
                 'size' => $archivo->size_file,
                 'fechaSubida' => $archivo->fecha_subida,
                 'tipo' => $archivo->tipo_archivo,
+                'selected' => false,
             ]);
         }
 
         return response()->json($archivosResp);
+    }
+
+    public function deleteFile(Request $request) : JsonResponse{
+        try{
+
+            $files = $request->all();
+
+            DB::beginTransaction();
+            foreach($files as $file){
+                $id = Crypt::decrypt($file['idArchivo']);
+
+                $idCarpeta = CarpetasUsuarios::where('id_nube',auth()->user()->nubeUsuario()->first()->id_nube)->where('nombre_carpeta', 'root')->first()->id_carpeta;
+                $archivo = ArchivosSubidos::where('id_carpeta', $idCarpeta)->where('id_archivo', $id)->first();
+                $archivo->eliminado = true;
+                $archivo->save();
+
+                $idPapelera = auth()->user()->nubeUsuario()->first()->papelera()->first()->id_papelera;
+                ArchivosBorrados::create([
+                    'id_papelera' => $idPapelera,
+                    'id_archivo' => $id,
+                ]);
+            }
+
+            DB::commit();
+            return  response()->json(['status' => 1, 'mensaje' => 'Archivo eliminado con éxito', 'enUso' => $this->getSizeUsed()], 201);
+        }catch(Exception $e){
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return response()->json(['status' => 0, 'mensaje' => 'No se pudo eliminar el archivo'], 500);
+        }
+    }
+
+    private  function getSizeUsed(){
+        $carpeta = auth()->user()->nubeUsuario()->where('id_nube', 1)->first()->carpetas()->where('nombre_carpeta', 'root')->first();
+        $total = $carpeta->archivos->where('eliminado', false)->sum('size_file');
+        return $total;
     }
 
     private function getNombreCorto(string $nombre) : string{

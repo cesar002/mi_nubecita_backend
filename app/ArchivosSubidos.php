@@ -29,4 +29,5 @@ class ArchivosSubidos extends Model{
     public function vistos(){
         return $this->hasMany('App\ArchivosVistos', 'id_archivo', 'id_archivo');
     }
+
 }

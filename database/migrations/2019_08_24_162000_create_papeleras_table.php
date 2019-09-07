@@ -15,7 +15,7 @@ class CreatePapelerasTable extends Migration
     {
         Schema::create('papeleras', function (Blueprint $table) {
             $table->integer('id_papelera')->autoIncrement();
-            $table->integer('id_nube');
+            $table->integer('id_nube')->unique();
         });
     }
 

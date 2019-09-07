@@ -19,8 +19,13 @@ Route::group(['prefix' => 'mi_nube', 'middleware' => 'auth:api'], function(){
     Route::get('me', 'AuthController@me');
     //rutas de subidas y descargas de archivos
     Route::group(['prefix' => 'store'], function () {
-        Route::post('upload', 'ArchivosController@uploadFiles');
+        Route::post('upload', 'ArchivosController@uploadFiles')->middleware('checkLimiteAlmacenaje');
+        Route::delete('deleteFiles', 'ArchivosController@deleteFile');
         Route::get('getFiles', 'ArchivosController@getFiles');
+
+        Route::group(['prefix' => 'papelera'], function () {
+            Route::get('/', 'PapeleraController@getFiles');
+        });
     });
 });
 

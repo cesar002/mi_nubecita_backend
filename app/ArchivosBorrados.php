@@ -10,8 +10,13 @@ class ArchivosBorrados extends Model{
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'id_papelera', 'id_archivo', 'fecha_borrado_def', 'borrado_def', 'activo',
+    ];
+
     public function papelera(){
-        return $this->belongsTo('App\Papeleras', 'id_papelera', 'id_archivo_borrado');
+        return $this->belongsTo(Papeleras::class, 'id_papelera', 'id_archivid_archivo_borradoo_borrado');
     }
+
 
 }

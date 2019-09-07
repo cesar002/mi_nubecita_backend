@@ -15,7 +15,7 @@ class InsertLimitesAlmacenaje extends Migration
     public function up()
     {
         DB::unprepared("
-        INSERT INTO limites_almacenaje(tipo_limite, limite) VALUES ('Basico', 1000000),('Pro', 2000000), ('Premium', 3000000)
+        INSERT INTO limites_almacenaje(tipo_limite, limite) VALUES ('Basico', 1073741824),('Pro', 2147483648), ('Premium', 3221225472)
         ");
     }
 

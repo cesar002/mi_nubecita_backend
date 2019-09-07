@@ -103,17 +103,21 @@ class AuthController extends Controller{
      * @return JsonResponse
      */
     public function me() : JsonResponse{
-        $carpeta = auth()->user()->nubeUsuario()->where('id_nube', 1)->first()->carpetas()->where('nombre_carpeta', 'root')->first();
-        $total = $carpeta->archivos->sum('size_file');
         $limite = auth()->user()->limiteAlmacenaje()->first();
         return response()->json([
             'me' => auth()->user()->email,
-            'enUso' => $total,
+            'enUso' => $this->getSizeUsed(),
             'limiteAlmacenaje' => [
                 'tipo' => $limite->tipo_limite,
                 'limite' => $limite->limite,
             ]
         ]);
+    }
+
+    private  function getSizeUsed(){
+        $carpeta = auth()->user()->nubeUsuario()->where('id_nube', 1)->first()->carpetas()->where('nombre_carpeta', 'root')->first();
+        $total = $carpeta->archivos->where('eliminado', false)->sum('size_file');
+        return $total;
     }
 
     /**

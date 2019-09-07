@@ -20,7 +20,7 @@ class Papeleras extends Model{
     }
 
     public function archivosBorrados(){
-        $this->hasMany('App\ArchivosBorrados', 'id_papelera', 'id_papelera');
+        $this->hasMany(ArchivosBorrados::class, 'id_papelera', 'id_papelera');
     }
 
 }
