@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class CreateTriggerCarpetaRoot extends Migration
+class CreateTriggerPapeleraNube extends Migration
 {
     /**
      * Run the migrations.
@@ -15,10 +15,9 @@ class CreateTriggerCarpetaRoot extends Migration
     public function up()
     {
         DB::unprepared(
-            "CREATE TRIGGER insertar_Root_Carpeta_trigger AFTER INSERT ON nubes_usuarios
-                FOR EACH ROW
-            INSERT INTO carpetas_usuarios (id_nube, nombre_carpeta, path_carpeta) VALUES (NEW.id_nube, 'root', '/')
-            "
+            "CREATE TRIGGER insertar_papelera_trigger AFTER INSERT ON nubes_usuarios
+            FOR EACH ROW
+            INSERT INTO papeleras (id_nube) VALUES (NEW.id_nube)"
         );
     }
 
@@ -29,6 +28,6 @@ class CreateTriggerCarpetaRoot extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP TRIGGER `insertar_Root_Carpeta_trigger`');
+        DB::unprepared('DROP TRIGGER `insertar_papelera_trigger`');
     }
 }
